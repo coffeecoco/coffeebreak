@@ -5,12 +5,12 @@ smsbox-port = <%= kannel_smsbox_port %>
 box-allow-ip = "*.*.*.*"
 box-deny-ip = "1.1.1.1"
 admin-password = foobar
-log-file = "/app/kannel-<%= customer %>/var/log/bearerbox_server.log"
+log-file = "/var/var/log/bearerbox_server.log"
 log-level = 3
 access-log-format = "%l [SMSC:%i] [SVC:%n] [ACT:%A] [BINF:%B] [from:%p] [to:%P] [flags:%m:%c:%M:%C:%d] [msg:%L **REDACTED**] [udh:%U:%u]"
-access-log = "/app/kannel-<%= customer %>/log/bearerbox/bearerbox_access.log"
+access-log = "/var/log/bearerbox_access.log"
 #store-type = spool
-#store-location = "/app/kannel-<%= customer %>/var/bearerbox_server"
+#store-location = "/var/var/bearerbox_server"
 smsbox-max-pending = 100
 dlr-storage = <%= dlr_storage %>
 
@@ -19,30 +19,33 @@ group = smsc
 smsc = http
 smsc-id = "forwarder_01"
 system-type = generic
-smsc-username = <%= smsc_username %>
-smsc-password = <%= smsc_password %>
-# port that the http smsc is listening to for incomin DLRs and SMSs - I am yet to verify this
-port = <%= smsc_http_port %>
+smsc-username = callbackuser
+smsc-password = nottelling
+port = 4444
 connect-allow-ip = "*.*.*.*"
-# URL to hit for outgoing messages via HTTP + &userid=90001&companyid=98238 + &u=whispir&p=c0ffee987
-send-url = "http://smsgate.whispir.com/smpp/inbound?udh=%u&sender=%p&body=%a&receiver=%P&fromSmsc=%i&smppUser=%n&toSmsc=%f&smsId=%I&createdTime=%t&smsType=%d&metaData=%D&refId=%F&billing=%B&userId=90001&companyId=98238&smppUsername=<%= smsc_username %>&smppPassword=<%= smsc_password %>&dlrurl=<%= kannel_ip %>:<%= smsc_http_port %>"
+send-url = "http://null"
 status-success-regex = "ccepted"
 #status-success-regex = "OK"
 transceiver-mode = true
+
+# SMSC SMPP
+group = smsc
+smsc = smpp
+host = <%= smsc_host %>
+port = <%= smsc_port %>
+smsc-username = <%= smsc_username  %>
+smsc-password = <%= smsc_password  %>
+
 
 # unused but required by bearerbox as at least one of wapbox or smsbox needs to run
 group = smsbox
 bearerbox-host = 127.0.0.1
 sendsms-port = <%= smsbox_port %>
 #global-sender = <%= smsbox_port %>
-log-file = "/app/kannel-<%= customer %>/var/log/smsbox_server.log"
+log-file = "/var/log/smsbox_server.log"
 log-level = 5
-access-log = "/app/kannel-<%= customer %>/log/smsbox_access.log"
+access-log = "/var/log/smsbox_access.log"
 
-# routing from smpp to the HTTP forwarder
-group = smsbox-route
-smsbox-id = "smpp_<%= customer %>"
-smsc-id = "forwarder_01"
 
 group = redis-connection
 id = redisdlr          

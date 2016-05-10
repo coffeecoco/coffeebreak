@@ -10,22 +10,23 @@
 #
 # Sample Usage:
 #
-class kannel::config(
+# SMSC SMPP
+require kannel::install
+
+class kannel::params (
+  $smsc_host = "smsglobal.com",
+  $smsc_port = "1775",
+  $smsc_username = "s3nte5ml",
+  $smsc_password = "nsyWz3dC",
   $dlr_storage = "redis",
-  $smsc_username = "",
-  $smsc_password = "bbb",
-  $smsc_http_port = "1001",
   $redis_host = "localhost",
   $redis_port = "6379",
-  $kannel_admin_port = "13010",
-  $kannel_smsbox_port = "1002",
+  $kannel_admin_port = "13000",
   $kannel_admin_pwd = "foobar",
+  $kannel_smsbox_port = "13003",
   $sms_stat_pwd = foobar,
-  $hub_listen_port = 13012,
-  $kannel_ip = "localhost",
-  $sendsms_port = 13013,
-  $redis_ip = "localhost",
-  $smsbox_port = "15000",
+  $sendsms_port = 13002,
+  $smsbox_port = "13001",
 )
 
 {
