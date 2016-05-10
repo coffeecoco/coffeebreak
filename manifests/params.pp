@@ -12,7 +12,7 @@
 #
 class kannel::config(
   $dlr_storage = "redis",
-  $smsc_username = "aaa",
+  $smsc_username = "",
   $smsc_password = "bbb",
   $smsc_http_port = "1001",
   $redis_host = "localhost",
@@ -30,11 +30,11 @@ class kannel::config(
 
 {
 
-file { ["/opt/kannel/"]:
+file { ["/opt/kannel/", "/opt/kannel/etc/"]:
             ensure => directory,
              }
              
-file { '/opt/kannel/kannel.conf':
+file { '/opt/kannel/etc/kannel.conf':
     content => template('kannel/kannel.conf.erb'),
     ensure  => file,
     owner => 'root',
