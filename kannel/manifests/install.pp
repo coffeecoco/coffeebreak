@@ -13,5 +13,12 @@ class kannel::install {
         sourceselect => all,
         recurse => remote,
  }
+ file { '/etc/init.d/kannel':
+        ensure => present,
+        owner  => "root",
+        group  => "root",
+        source => "puppet:///modules/kannel/kannel",
+        mode   => '770',
+ }
 }
 
